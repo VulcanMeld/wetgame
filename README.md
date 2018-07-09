@@ -1,1 +1,3 @@
 # wetgame
+
+games are fun
