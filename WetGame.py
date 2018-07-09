@@ -14,6 +14,7 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 wetman = pygame.image.load("images/wetman.png")
+width_wetman = wetman.get_width()
 raindrop = pygame.image.load("images/raindrop.png")
 
 
@@ -52,8 +53,13 @@ class WetGame(object):
 
             if self.man_right:
                 self.man_pos_x += MAN_SPEED
+                if self.man_pos_x >= screen_width - MAN_SPEED - width_wetman:
+                    self.man_right = False
+
             if self.man_left:
                 self.man_pos_x -= MAN_SPEED
+                if self.man_pos_x <= MAN_SPEED:
+                    self.man_left = False
 
             self.draw()
 
@@ -64,3 +70,6 @@ game = WetGame()
 game.game_loop()
 
 pygame.quit()
+
+
+
