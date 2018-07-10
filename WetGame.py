@@ -5,10 +5,12 @@ from raindrop import RainDrop
 from pygame.locals import *
 
 pygame.init()
+pygame.font.init()
 
 BACKGROUND = (255, 255, 255)
 FRAME_RATE = 60
 MAN_SPEED = 5
+FONT_COLOR = (0,0,0)
 
 screen_width = 800
 screen_height = 600
@@ -17,6 +19,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 wetman = pygame.transform.scale2x(pygame.image.load("images/wetman.png"))
 width_wetman = wetman.get_width()
+font = pygame.font.Font(pygame.font.get_default_font(),20)
 
 
 class WetGame(object):
@@ -42,11 +45,17 @@ class WetGame(object):
     def draw(self):
         screen.fill(BACKGROUND)
 
+        score_message = 'Seconds Alive: ' + str(pygame.time.get_ticks()/1000)
+        font_surface = font.render(score_message, False, FONT_COLOR)
+
+        screen.blit(font_surface,(500,10))
+
         screen.blit(wetman, (self.man_pos_x, self.man_pos_y))
 
         self.raindrops.draw(screen)
 
         pygame.display.flip()
+
 
     def game_loop(self):
         while not self.done:
