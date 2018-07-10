@@ -53,13 +53,13 @@ class WetGame(object):
 
             if self.man_right:
                 self.man_pos_x += MAN_SPEED
-                if self.man_pos_x >= screen_width - MAN_SPEED - width_wetman:
-                    self.man_right = False
+                if self.man_pos_x > screen_width - width_wetman:
+                    self.man_pos_x = screen_width - width_wetman
 
             if self.man_left:
                 self.man_pos_x -= MAN_SPEED
-                if self.man_pos_x <= MAN_SPEED:
-                    self.man_left = False
+                if self.man_pos_x < 0:
+                    self.man_pos_x = 0
 
             self.draw()
 
