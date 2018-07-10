@@ -15,7 +15,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 wetman = pygame.image.load("images/wetman.png")
 width_wetman = wetman.get_width()
-raindrop = pygame.image.load("images/raindrop.png")
+
 
 
 class WetGame(object):
