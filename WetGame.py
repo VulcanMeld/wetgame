@@ -1,5 +1,7 @@
 import pygame
 
+from raindrop import RainDrop
+
 from pygame.locals import *
 
 pygame.init()
@@ -13,9 +15,8 @@ screen_height = 600
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-wetman = pygame.image.load("images/wetman.png")
+wetman = pygame.transform.scale2x(pygame.image.load("images/wetman.png"))
 width_wetman = wetman.get_width()
-
 
 
 class WetGame(object):
@@ -27,6 +28,7 @@ class WetGame(object):
         self.man_right = False
         self.man_left = False
         self.clock = pygame.time.Clock()
+        self.raindrops = pygame.sprite.Group()
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
@@ -41,7 +43,8 @@ class WetGame(object):
         screen.fill(BACKGROUND)
 
         screen.blit(wetman, (self.man_pos_x, self.man_pos_y))
-        screen.blit(raindrop, (100, 300))
+
+        self.raindrops.draw(screen)
 
         pygame.display.flip()
 
@@ -60,6 +63,9 @@ class WetGame(object):
                 self.man_pos_x -= MAN_SPEED
                 if self.man_pos_x < 0:
                     self.man_pos_x = 0
+
+            self.raindrops.update()
+            self.raindrops.add(RainDrop())
 
             self.draw()
 

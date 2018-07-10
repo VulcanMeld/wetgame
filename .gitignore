@@ -1,3 +1,4 @@
 Thumbs.db
 .python-version
 .idea/
+__pycache__/
