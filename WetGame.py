@@ -34,8 +34,10 @@ class WetGame(object):
         self.wetman = pygame.sprite.Group()
         self.wetman.add(WetMan(screen_width, screen_height))
 
+        self.init_time = pygame.time.get_ticks()
         self.score = 0
         self.game_over = False
+        self.reset = False
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
@@ -45,6 +47,9 @@ class WetGame(object):
                 self.man_right = event.type == pygame.KEYDOWN
             elif event.key == pygame.K_LEFT:
                 self.man_left = event.type == pygame.KEYDOWN
+            elif event.key == pygame.K_r:
+                self.reset = True
+                self.done = True
 
     def draw(self):
         screen.fill(BACKGROUND)
@@ -57,7 +62,7 @@ class WetGame(object):
             score_message = 'Seconds Alive: ' + str(self.score/1000)
             font_surface = ingame_score_font.render(score_message, True, FONT_COLOR)
 
-            screen.blit(font_surface,(500,10))
+            screen.blit(font_surface, (500, 10))
         else:
             score_message = 'You stayed alive for {:.2f} seconds!'.format(self.score/1000)
             font_surface = endgame_score_font.render(score_message, True, FONT_COLOR)
@@ -78,7 +83,7 @@ class WetGame(object):
                 self.handle_event(event)
 
             if not self.game_over:
-                self.score = pygame.time.get_ticks()
+                self.score = pygame.time.get_ticks() - self.init_time
 
                 collision = pygame.sprite.spritecollideany((self.wetman.sprites())[0], self.raindrops)
                 if collision is not None:
@@ -93,9 +98,13 @@ class WetGame(object):
 
             self.clock.tick(FRAME_RATE)
 
+        return self.reset
 
-game = WetGame()
-game.game_loop()
+
+ball = True
+while ball:
+    game = WetGame()
+    ball = game.game_loop()
 
 pygame.quit()
 
