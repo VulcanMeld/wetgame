@@ -1,4 +1,5 @@
 import pygame
+from pygame import Color, Rect
 
 from raindrop import RainDrop
 from wetman import WetMan
@@ -16,7 +17,8 @@ screen_height = 600
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 
-font = pygame.font.Font(pygame.font.get_default_font(),20)
+ingame_score_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+endgame_score_font = pygame.font.Font(pygame.font.get_default_font(), 32)
 
 
 class WetGame(object):
@@ -47,14 +49,25 @@ class WetGame(object):
     def draw(self):
         screen.fill(BACKGROUND)
 
-        score_message = 'Seconds Alive: ' + str(self.score/1000)
-        font_surface = font.render(score_message, False, FONT_COLOR)
-
-        screen.blit(font_surface,(500,10))
-
         self.wetman.draw(screen)
 
         self.raindrops.draw(screen)
+
+        if not self.game_over:
+            score_message = 'Seconds Alive: ' + str(self.score/1000)
+            font_surface = ingame_score_font.render(score_message, True, FONT_COLOR)
+
+            screen.blit(font_surface,(500,10))
+        else:
+            score_message = 'You stayed alive for {:.2f} seconds!'.format(self.score/1000)
+            font_surface = endgame_score_font.render(score_message, True, FONT_COLOR)
+
+            pygame.draw.rect(screen, Color("black"), Rect(screen_width/2 - 150, screen_height/2 - 100, 300, 200))
+            pygame.draw.rect(screen, Color("white"), Rect(screen_width/2 - 148, screen_height/2 - 98, 296, 196))
+            screen.blit(font_surface, (
+                screen_width/2 - font_surface.get_width()/2,
+                screen_height/2 - font_surface.get_height()/2
+            ))
 
         pygame.display.flip()
 
