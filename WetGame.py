@@ -32,6 +32,8 @@ class WetGame(object):
         self.wetman = pygame.sprite.Group()
         self.wetman.add(WetMan(screen_width, screen_height))
 
+        self.score = 0
+        self.game_over = False
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
@@ -45,7 +47,7 @@ class WetGame(object):
     def draw(self):
         screen.fill(BACKGROUND)
 
-        score_message = 'Seconds Alive: ' + str(pygame.time.get_ticks()/1000)
+        score_message = 'Seconds Alive: ' + str(self.score/1000)
         font_surface = font.render(score_message, False, FONT_COLOR)
 
         screen.blit(font_surface,(500,10))
@@ -56,19 +58,20 @@ class WetGame(object):
 
         pygame.display.flip()
 
-
     def game_loop(self):
         while not self.done:
 
             for event in pygame.event.get():
                 self.handle_event(event)
 
-            collision = pygame.sprite.spritecollideany((self.wetman.sprites())[0], self.raindrops)
+            if not self.game_over:
+                self.score = pygame.time.get_ticks()
 
-            if collision is not None:
-                self.done = True
+                collision = pygame.sprite.spritecollideany((self.wetman.sprites())[0], self.raindrops)
+                if collision is not None:
+                    self.game_over = True
 
-            self.wetman.update(self.man_left, self.man_right)
+                self.wetman.update(self.man_left, self.man_right)
 
             self.raindrops.update()
             self.raindrops.add(RainDrop(screen_width))

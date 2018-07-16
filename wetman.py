@@ -13,7 +13,7 @@ class WetMan(pygame.sprite.Sprite):
         self.rect.x = 0
         self.rect.y = screen_height - self.image.get_height()
 
-        self.v_x = 5
+        self.v_x = 3
 
         self.bounds = (0, screen_width - self.image.get_width())
 
