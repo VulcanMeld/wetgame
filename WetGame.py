@@ -32,6 +32,7 @@ class WetGame(object):
         self.wetman = pygame.sprite.Group()
         self.wetman.add(WetMan(screen_width, screen_height))
 
+
     def handle_event(self, event):
         if event.type == pygame.QUIT:
             self.done = True
@@ -61,6 +62,11 @@ class WetGame(object):
 
             for event in pygame.event.get():
                 self.handle_event(event)
+
+            collision = pygame.sprite.spritecollideany((self.wetman.sprites())[0], self.raindrops)
+
+            if collision is not None:
+                self.done = True
 
             self.wetman.update(self.man_left, self.man_right)
 
